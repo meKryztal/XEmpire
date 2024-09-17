@@ -5,3 +5,4 @@ cloudscraper
 zoneinfo
 pydantic-settings
 pytz
+tzdata
