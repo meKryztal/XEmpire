@@ -1,0 +1,7 @@
+sys
+requests
+colorama
+cloudscraper
+zoneinfo
+pydantic
+pytz
