@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     TAPS_ENABLED: bool = True
     TAPS_PER_SECOND: list[int] = [20, 30]  # tested with 4 fingers
     INVEST_ENABLED: bool = False  # НЕ ВОРК
-    PVP_ENABLED: bool = True # будет работать после прокачки навыка "переговоры"
+    PVP_ENABLED: bool = False # ПОКА ЧТО НЕ ВОРК будет работать после прокачки навыка "переговоры"
     PVP_LEAGUE: str = 'auto'
     PVP_UPGRADE_LEAGUE: bool = True
     PVP_COUNT: int = 10
