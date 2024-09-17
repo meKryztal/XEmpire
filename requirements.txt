@@ -3,5 +3,5 @@ requests
 colorama
 cloudscraper
 zoneinfo
-pydantic
+pydantic-settings
 pytz
