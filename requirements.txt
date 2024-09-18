@@ -1,8 +1,5 @@
-sys
 requests
 colorama
 cloudscraper
-zoneinfo
 pydantic-settings
-pytz
 tzdata
