@@ -37,8 +37,8 @@ class Data:
 class PixelTod:
     def __init__(self):
         self.scraper = cloudscraper.create_scraper()
-        self.DEFAULT_COUNTDOWN = (3600)  # Интервал между повтором скрипта,  час
-        self.INTERVAL_DELAY = random.randint(120, 300)   # Интервал между каждым аккаунтом, 3 секунды дефолт
+        self.DEFAULT_COUNTDOWN = config.SLEEP_ALL
+        self.INTERVAL_DELAY = config.SLEEP_MULT 
         self.base_headers = {
             "Accept": "*/*",
             "Accept-Language": "en-US,en;q=0.9,ru;q=0.8",
