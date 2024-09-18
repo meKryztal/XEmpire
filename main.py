@@ -11,9 +11,9 @@ from zoneinfo import ZoneInfo
 from settings import config
 from functions import calculate_bet, calculate_best_skill, improve_possible, number_short, calculate_tap_power
 import time
-from pathlib import Path
+
 from pydantic import BaseModel, Field
-from pytz import UTC
+
 
 init(autoreset=True)
 
