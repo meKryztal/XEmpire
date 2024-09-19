@@ -114,16 +114,10 @@ class PixelTod:
         if self.dbData:
             del full_profile['dbData']
         hero_data = full_profile.get('hero')
-        if hero_data:
-            self.balance = int(hero_data.get('money', 0))
-            self.update_level(level=int(hero_data.get('level', 0)))
-            self.mph = int(hero_data.get('moneyPerHour', 0))
-            offline_bonus = int(hero_data.get('offlineBonus', 0))
-        else:
-            self.balance = 0
-            self.update_level(level=0)
-            self.mph = 0
-            offline_bonus = 0
+        self.balance = int(full_profile['hero']['money'] or 0)
+        self.update_level(level=int(full_profile['hero']['level'] or 0))
+        self.mph = int(full_profile['hero']['moneyPerHour'] or 0)
+        offline_bonus = int(full_profile['hero']['offlineBonus'] or 0)
         if offline_bonus > 0:
             time.sleep(random.randint(1, 2))
             if self.get_offline_bonus(apiKey=apiKey):
