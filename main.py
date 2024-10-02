@@ -11,7 +11,8 @@ from zoneinfo import ZoneInfo
 from settings import config
 from functions import calculate_bet, calculate_best_skill, improve_possible, number_short, calculate_tap_power
 import time
-
+from fake_useragent import UserAgent
+from fake_useragent import UserAgent
 from pydantic import BaseModel, Field
 
 
@@ -38,7 +39,7 @@ class PixelTod:
     def __init__(self):
         self.scraper = cloudscraper.create_scraper()
         self.DEFAULT_COUNTDOWN = config.SLEEP_ALL
-        self.INTERVAL_DELAY = config.SLEEP_MULT 
+        self.INTERVAL_DELAY = config.SLEEP_MULT
         self.base_headers = {
             "Accept": "*/*",
             "Accept-Language": "en-US,en;q=0.9,ru;q=0.8",
@@ -48,7 +49,7 @@ class PixelTod:
             "Sec-Fetch-Dest": "empty",
             "Sec-Fetch-Mode": "cors",
             "Sec-Fetch-Site": "same-site",
-            "User-Agent": "Mozilla/5.0 (Linux; Android 9; SM-N971N Build/PQ3B.190801.07101020; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/124.0.6367.82 Safari/537.36",
+            "User-Agent": UserAgent(os='android').random,
             "X-Requested-With": "org.telegram.messenger.web",
         }
 
@@ -67,6 +68,9 @@ class PixelTod:
     def main(self):
         with open("initdata.txt", "r") as file:
             datas = file.read().splitlines()
+
+        with open("proxies.txt", "r") as file:
+            proxies = file.read().splitlines()
 
         self.log(f'{Fore.LIGHTYELLOW_EX}Обнаружено аккаунтов: {len(datas)}')
         if not datas:
@@ -99,6 +103,15 @@ class PixelTod:
                         "startParam": f"{utm_bot_inline}",
                     }
                 }
+                proxy = proxies[no % len(proxies)] if proxies else None
+                if proxy:
+                    if len(proxies) != len(datas):
+                        raise ValueError("Количество прокси и ключей не совпадает")
+                    self.scraper.proxies = {
+                        "http": proxy,
+                        "https": proxy,
+                    }
+                    self.log(f"{Fore.LIGHTYELLOW_EX}Используется прокси: {proxy}")
                 headers = self.base_headers.copy()
                 self.api_call(url, data=json.dumps(payload), headers=headers, method='POST')
                 Data(apiKey_us, username, id_us)
@@ -113,7 +126,6 @@ class PixelTod:
         self.dbData = full_profile.get('dbData', {})
         if self.dbData:
             del full_profile['dbData']
-        hero_data = full_profile.get('hero')
         self.balance = int(full_profile['hero']['money'] or 0)
         self.update_level(level=int(full_profile['hero']['level'] or 0))
         self.mph = int(full_profile['hero']['moneyPerHour'] or 0)
@@ -272,6 +284,7 @@ class PixelTod:
             my_skills = full_profile['skills']
             friends_count = int(full_profile['profile']['friends'] or 0)
             for skill in self.dbData['dbSkills']:
+                time.sleep(1)
                 if skill['category'] != 'mining':
                     continue
                 if skill['key'] in my_skills:
